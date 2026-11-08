@@ -6,17 +6,17 @@
 
 ## Установка с TestPyPI
 
-После публикации релиза 1.0.0:
+Релиз 1.0.0 опубликован:
+https://test.pypi.org/project/poloshkov-mtp-utils/1.0.0/
 
 ```bash
-python -m pip install \
+python -m pip install --no-deps \
   --index-url https://test.pypi.org/simple/ \
-  --extra-index-url https://pypi.org/simple \
   poloshkov-mtp-utils==1.0.0
 ```
 
-Дополнительный индекс нужен только для возможных зависимостей сборки;
-сам пакет зависит исключительно от стандартной библиотеки.
+Пакет зависит исключительно от стандартной библиотеки. Установка из
+TestPyPI в чистое виртуальное окружение и последующий импорт проверены.
 
 ## Пример
 
