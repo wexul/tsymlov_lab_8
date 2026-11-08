@@ -99,6 +99,19 @@ def main() -> None:
     else:
         failures.append("дистрибутивы не найдены")
 
+    publication_code = (
+        "import json, urllib.request; "
+        "url = 'https://test.pypi.org/pypi/poloshkov-mtp-utils/1.0.0/json'; "
+        "data = json.load(urllib.request.urlopen(url)); "
+        "assert data['info']['version'] == '1.0.0'; "
+        "assert len(data['urls']) == 2; "
+        "print('TestPyPI version:', data['info']['version']); "
+        "print('Published files:', len(data['urls'])); "
+        "print('Project URL:', data['info']['project_url'])"
+    )
+    run("Проверка публикации пакета на TestPyPI",
+        ["py", "-3", "-c", publication_code])
+
     (ROOT / "demo_output.txt").write_text(
         "\n".join(output).rstrip("\n") + "\n",
         encoding="utf-8",

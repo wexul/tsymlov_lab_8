@@ -21,7 +21,7 @@
 | Средняя | 6 | Настроить flake8 | [`.flake8`](.flake8) |
 | Средняя | 10 | Описать архитектуру MVC | [`task10_mvc_architecture.md`](task10_mvc_architecture.md) |
 | Повышенная | 5 | Применить TDD к API | [`advanced05_books_api.py`](advanced05_books_api.py) |
-| Повышенная | 9 | Создать пакет и подготовить публикацию на TestPyPI | [`advanced09_package/`](advanced09_package/) |
+| Повышенная | 9 | Создать пакет и опубликовать на TestPyPI | [`advanced09_package/`](advanced09_package/) |
 
 Протокол фактических запусков — в [`demo_output.txt`](demo_output.txt).
 Дополнительно настроен GitHub Actions: pytest, flake8, сборка пакета и
@@ -94,32 +94,32 @@ Pydantic очищает внешние пробелы, проверяет обя
 фильтрация без учёта регистра, все операции CRUD, отсутствующие id,
 пять вариантов невалидного ввода и изоляция хранилища.
 
-### Задание 9. Собственный пакет для TestPyPI
+### Задание 9. Собственный пакет на TestPyPI
 
-Создан пакет **`poloshkov-mtp-utils` 1.0.0** с исходниками в `src` и
-метаданными `pyproject.toml`. Он не имеет внешних зависимостей и предоставляет
-`extract_words`, `word_count`, `top_words`, `character_count`. Поддерживаются
-Unicode, дефис внутри слов и детерминированная сортировка частот.
+Создан и опубликован пакет **`poloshkov-mtp-utils` 1.0.0** с исходниками
+в `src` и метаданными `pyproject.toml`. Он не имеет внешних зависимостей и
+предоставляет `extract_words`, `word_count`, `top_words`, `character_count`.
+Поддерживаются Unicode, дефис внутри слов и детерминированная сортировка
+частот.
+
+Публичная страница релиза:
+https://test.pypi.org/project/poloshkov-mtp-utils/1.0.0/
 
 10 тестов проверяют пунктуацию, регистр, кириллицу, пустой ввод, границы
-параметра `limit`, подсчёт символов и версию пакета. Собраны:
+параметра `limit`, подсчёт символов и версию пакета. Опубликованы:
 
 - `poloshkov_mtp_utils-1.0.0-py3-none-any.whl`;
 - `poloshkov_mtp_utils-1.0.0.tar.gz`.
 
-Оба файла прошли `twine check`. Wheel дополнительно установлен в чистое
-виртуальное окружение: импорт и вычисления выполнены успешно.
+Оба файла прошли `twine check`. После публикации пакет установлен из
+TestPyPI в новое виртуальное окружение без локальных файлов проекта:
+версия 1.0.0 импортирована, `word_count` и `top_words` возвращают ожидаемые
+результаты.
 
-Фактическая загрузка требует личного API-токена TestPyPI, который не
-должен храниться в репозитории. После установки токена в переменные
-окружения публикация выполняется командами:
-
-```powershell
-cd advanced09_package
-$env:TESTPYPI_API_TOKEN="личный_токен"
-python -m twine upload --repository testpypi dist/* `
-  --username __token__ --password $env:TESTPYPI_API_TOKEN --non-interactive
-Remove-Item Env:TESTPYPI_API_TOKEN
+```bash
+python -m pip install --no-deps \
+  --index-url https://test.pypi.org/simple/ \
+  poloshkov-mtp-utils==1.0.0
 ```
 
 ---
@@ -131,7 +131,7 @@ Remove-Item Env:TESTPYPI_API_TOKEN
 ```
 $ python -m pytest -v
 ...
-36 passed, 1 warning in 0.83s
+36 passed, 1 warning in 0.81s
 ```
 
 10 тестов калькулятора + 16 тестов API + 10 тестов пакета. Единственное
@@ -141,7 +141,8 @@ $ python -m pytest -v
 ### Воспроизводимый протокол
 
 `collect_demo.py` заново выполняет демонстрации, все тесты, flake8,
-сборку и проверку дистрибутивов, сохраняет фактический вывод и завершается
+сборку, проверку дистрибутивов и запрос опубликованного релиза TestPyPI,
+сохраняет фактический вывод и завершается
 с ошибкой, если хотя бы одна команда вернула ненулевой код.
 
 ## Структура репозитория

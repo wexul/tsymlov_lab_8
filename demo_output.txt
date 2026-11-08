@@ -101,7 +101,7 @@ advanced09_package/tests/test_textstats.py::test_version_is_available PASSED [10
     from starlette.testclient import TestClient as TestClient  # noqa
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-======================== 36 passed, 1 warning in 0.83s ========================
+======================== 36 passed, 1 warning in 0.81s ========================
 
 код возврата: 0
 
@@ -183,7 +183,7 @@ running install_egg_info
 Copying src\poloshkov_mtp_utils.egg-info to build\bdist.win-amd64\wheel\.\poloshkov_mtp_utils-1.0.0-py3.11.egg-info
 running install_scripts
 creating build\bdist.win-amd64\wheel\poloshkov_mtp_utils-1.0.0.dist-info\WHEEL
-creating 'C:\\вуз\\цемлов\\lab8_var4\\advanced09_package\\dist\\.tmp-uguy6w_y\\poloshkov_mtp_utils-1.0.0-py3-none-any.whl' and adding 'build\\bdist.win-amd64\\wheel' to it
+creating 'C:\\вуз\\цемлов\\lab8_var4\\advanced09_package\\dist\\.tmp-cp116r4p\\poloshkov_mtp_utils-1.0.0-py3-none-any.whl' and adding 'build\\bdist.win-amd64\\wheel' to it
 adding 'poloshkov_mtp_utils/__init__.py'
 adding 'poloshkov_mtp_utils/textstats.py'
 adding 'poloshkov_mtp_utils-1.0.0.dist-info/licenses/LICENSE'
@@ -222,5 +222,16 @@ $ py -3 -m twine check advanced09_package\dist\poloshkov_mtp_utils-1.0.0-py3-non
 
 Checking advanced09_package\dist\poloshkov_mtp_utils-1.0.0-py3-none-any.whl: PASSED
 Checking advanced09_package\dist\poloshkov_mtp_utils-1.0.0.tar.gz: PASSED
+
+код возврата: 0
+
+----------------------------------------------------------------------
+Проверка публикации пакета на TestPyPI
+----------------------------------------------------------------------
+$ py -3 -c import json, urllib.request; url = 'https://test.pypi.org/pypi/poloshkov-mtp-utils/1.0.0/json'; data = json.load(urllib.request.urlopen(url)); assert data['info']['version'] == '1.0.0'; assert len(data['urls']) == 2; print('TestPyPI version:', data['info']['version']); print('Published files:', len(data['urls'])); print('Project URL:', data['info']['project_url'])
+
+TestPyPI version: 1.0.0
+Published files: 2
+Project URL: https://test.pypi.org/project/poloshkov-mtp-utils/
 
 код возврата: 0
