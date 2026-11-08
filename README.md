@@ -114,7 +114,7 @@ Unicode, дефис внутри слов и детерминированная 
 должен храниться в репозитории. После установки токена в переменные
 окружения публикация выполняется командами:
 
-```bash
+```powershell
 cd advanced09_package
 $env:TESTPYPI_API_TOKEN="личный_токен"
 python -m twine upload --repository testpypi dist/* `
