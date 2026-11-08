@@ -1,0 +1,226 @@
+Лабораторная работа №8, вариант 4 - фактические запуски
+======================================================================
+
+Дата выполнения: 08.11.2026
+Python: 3.11.1
+ОС: Windows-10-10.0.22631-SP0
+
+Каждый раздел содержит команду, фактический вывод и код возврата.
+
+----------------------------------------------------------------------
+Задание 4 (средняя). Калькулятор
+----------------------------------------------------------------------
+$ py -3 task04_calculator.py
+
+2 + 3 = 5
+10 - 4 = 6
+6 * 7 = 42
+9 / 2 = 4.5
+1 / 0 -> деление на ноль запрещено
+
+код возврата: 0
+
+----------------------------------------------------------------------
+Задание 5 (повышенная). FastAPI CRUD
+----------------------------------------------------------------------
+$ py -3 -c from fastapi.testclient import TestClient; from advanced05_books_api import create_app; client = TestClient(create_app()); response = client.post('/books', json={'title': 'Чистый код', 'author': 'Роберт Мартин', 'year': 2008}); print('POST /books:', response.status_code, response.json()); book_id = response.json()['id']; print('GET /books:', client.get('/books').status_code, client.get('/books').json()); print('DELETE /books:', client.delete(f'/books/{book_id}').status_code); print('GET удалённой:', client.get(f'/books/{book_id}').status_code); client.close()
+
+POST /books: 201 {'title': 'Чистый код', 'author': 'Роберт Мартин', 'year': 2008, 'id': 1}
+GET /books: 200 [{'title': 'Чистый код', 'author': 'Роберт Мартин', 'year': 2008, 'id': 1}]
+DELETE /books: 204
+GET удалённой: 404
+C:\Users\polos\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+
+код возврата: 0
+
+----------------------------------------------------------------------
+Задание 9 (повышенная). Демонстрация своего пакета
+----------------------------------------------------------------------
+$ py -3 -c import sys; sys.path.insert(0, 'advanced09_package/src'); from poloshkov_mtp_utils import top_words, word_count; text = 'Python, Python и pytest'; print('word_count:', word_count(text)); print('top_words:', top_words(text))
+
+word_count: 4
+top_words: [('python', 2), ('pytest', 1), ('и', 1)]
+
+код возврата: 0
+
+----------------------------------------------------------------------
+Все pytest-тесты: калькулятор, API и пакет
+----------------------------------------------------------------------
+$ py -3 -m pytest -v
+
+============================= test session starts =============================
+platform win32 -- Python 3.11.1, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\polos\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: C:\вуз\цемлов\lab8_var4
+configfile: pytest.ini
+testpaths: tests, advanced09_package/tests
+plugins: anyio-4.16.0
+collecting ... collected 36 items
+
+tests/test_advanced05_api.py::test_create_book PASSED                    [  2%]
+tests/test_advanced05_api.py::test_create_strips_outer_whitespace PASSED [  5%]
+tests/test_advanced05_api.py::test_list_books PASSED                     [  8%]
+tests/test_advanced05_api.py::test_filter_books_by_author_case_insensitive PASSED [ 11%]
+tests/test_advanced05_api.py::test_get_existing_book PASSED              [ 13%]
+tests/test_advanced05_api.py::test_get_missing_book_returns_404 PASSED   [ 16%]
+tests/test_advanced05_api.py::test_update_book PASSED                    [ 19%]
+tests/test_advanced05_api.py::test_update_missing_book_returns_404 PASSED [ 22%]
+tests/test_advanced05_api.py::test_delete_book PASSED                    [ 25%]
+tests/test_advanced05_api.py::test_delete_missing_book_returns_404 PASSED [ 27%]
+tests/test_advanced05_api.py::test_invalid_book_returns_422[payload0] PASSED [ 30%]
+tests/test_advanced05_api.py::test_invalid_book_returns_422[payload1] PASSED [ 33%]
+tests/test_advanced05_api.py::test_invalid_book_returns_422[payload2] PASSED [ 36%]
+tests/test_advanced05_api.py::test_invalid_book_returns_422[payload3] PASSED [ 38%]
+tests/test_advanced05_api.py::test_invalid_book_returns_422[payload4] PASSED [ 41%]
+tests/test_advanced05_api.py::test_storage_is_isolated_between_clients PASSED [ 44%]
+tests/test_task04_calculator.py::test_add[2-3-5] PASSED                  [ 47%]
+tests/test_task04_calculator.py::test_add[-2-3-1] PASSED                 [ 50%]
+tests/test_task04_calculator.py::test_add[0-0-0] PASSED                  [ 52%]
+tests/test_task04_calculator.py::test_add[0.1-0.2-0.3] PASSED            [ 55%]
+tests/test_task04_calculator.py::test_subtract PASSED                    [ 58%]
+tests/test_task04_calculator.py::test_multiply PASSED                    [ 61%]
+tests/test_task04_calculator.py::test_divide PASSED                      [ 63%]
+tests/test_task04_calculator.py::test_divide_by_zero[0] PASSED           [ 66%]
+tests/test_task04_calculator.py::test_divide_by_zero[0.0] PASSED         [ 69%]
+tests/test_task04_calculator.py::test_divide_by_zero[-0.0] PASSED        [ 72%]
+advanced09_package/tests/test_textstats.py::test_extract_words_ignores_punctuation_and_case PASSED [ 75%]
+advanced09_package/tests/test_textstats.py::test_extract_words_supports_cyrillic_and_hyphen PASSED [ 77%]
+advanced09_package/tests/test_textstats.py::test_word_count PASSED       [ 80%]
+advanced09_package/tests/test_textstats.py::test_top_words_orders_by_frequency_then_alphabet PASSED [ 83%]
+advanced09_package/tests/test_textstats.py::test_top_words_limit PASSED  [ 86%]
+advanced09_package/tests/test_textstats.py::test_top_words_rejects_non_positive_limit[0] PASSED [ 88%]
+advanced09_package/tests/test_textstats.py::test_top_words_rejects_non_positive_limit[-1] PASSED [ 91%]
+advanced09_package/tests/test_textstats.py::test_top_words_rejects_non_positive_limit[-100] PASSED [ 94%]
+advanced09_package/tests/test_textstats.py::test_character_count PASSED  [ 97%]
+advanced09_package/tests/test_textstats.py::test_version_is_available PASSED [100%]
+
+============================== warnings summary ===============================
+..\..\..\Users\polos\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\polos\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 36 passed, 1 warning in 0.83s ========================
+
+код возврата: 0
+
+----------------------------------------------------------------------
+Задание 6 (средняя). Проверка стиля flake8
+----------------------------------------------------------------------
+$ py -3 -m flake8 .
+
+
+код возврата: 0
+
+----------------------------------------------------------------------
+Задание 9 (повышенная). Сборка wheel и sdist
+----------------------------------------------------------------------
+$ py -3 -m build advanced09_package
+
+running egg_info
+writing src\poloshkov_mtp_utils.egg-info\PKG-INFO
+writing dependency_links to src\poloshkov_mtp_utils.egg-info\dependency_links.txt
+writing top-level names to src\poloshkov_mtp_utils.egg-info\top_level.txt
+reading manifest file 'src\poloshkov_mtp_utils.egg-info\SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'src\poloshkov_mtp_utils.egg-info\SOURCES.txt'
+running sdist
+running egg_info
+writing src\poloshkov_mtp_utils.egg-info\PKG-INFO
+writing dependency_links to src\poloshkov_mtp_utils.egg-info\dependency_links.txt
+writing top-level names to src\poloshkov_mtp_utils.egg-info\top_level.txt
+reading manifest file 'src\poloshkov_mtp_utils.egg-info\SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'src\poloshkov_mtp_utils.egg-info\SOURCES.txt'
+running check
+creating poloshkov_mtp_utils-1.0.0
+creating poloshkov_mtp_utils-1.0.0\src\poloshkov_mtp_utils
+creating poloshkov_mtp_utils-1.0.0\src\poloshkov_mtp_utils.egg-info
+creating poloshkov_mtp_utils-1.0.0\tests
+copying files to poloshkov_mtp_utils-1.0.0...
+copying LICENSE -> poloshkov_mtp_utils-1.0.0
+copying README.md -> poloshkov_mtp_utils-1.0.0
+copying pyproject.toml -> poloshkov_mtp_utils-1.0.0
+copying src\poloshkov_mtp_utils\__init__.py -> poloshkov_mtp_utils-1.0.0\src\poloshkov_mtp_utils
+copying src\poloshkov_mtp_utils\textstats.py -> poloshkov_mtp_utils-1.0.0\src\poloshkov_mtp_utils
+copying src\poloshkov_mtp_utils.egg-info\PKG-INFO -> poloshkov_mtp_utils-1.0.0\src\poloshkov_mtp_utils.egg-info
+copying src\poloshkov_mtp_utils.egg-info\SOURCES.txt -> poloshkov_mtp_utils-1.0.0\src\poloshkov_mtp_utils.egg-info
+copying src\poloshkov_mtp_utils.egg-info\dependency_links.txt -> poloshkov_mtp_utils-1.0.0\src\poloshkov_mtp_utils.egg-info
+copying src\poloshkov_mtp_utils.egg-info\top_level.txt -> poloshkov_mtp_utils-1.0.0\src\poloshkov_mtp_utils.egg-info
+copying tests\test_textstats.py -> poloshkov_mtp_utils-1.0.0\tests
+Writing poloshkov_mtp_utils-1.0.0\setup.cfg
+Creating tar archive
+removing 'poloshkov_mtp_utils-1.0.0' (and everything under it)
+running egg_info
+writing src\poloshkov_mtp_utils.egg-info\PKG-INFO
+writing dependency_links to src\poloshkov_mtp_utils.egg-info\dependency_links.txt
+writing top-level names to src\poloshkov_mtp_utils.egg-info\top_level.txt
+reading manifest file 'src\poloshkov_mtp_utils.egg-info\SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'src\poloshkov_mtp_utils.egg-info\SOURCES.txt'
+running bdist_wheel
+running build
+running build_py
+creating build\lib\poloshkov_mtp_utils
+copying src\poloshkov_mtp_utils\textstats.py -> build\lib\poloshkov_mtp_utils
+copying src\poloshkov_mtp_utils\__init__.py -> build\lib\poloshkov_mtp_utils
+running egg_info
+writing src\poloshkov_mtp_utils.egg-info\PKG-INFO
+writing dependency_links to src\poloshkov_mtp_utils.egg-info\dependency_links.txt
+writing top-level names to src\poloshkov_mtp_utils.egg-info\top_level.txt
+reading manifest file 'src\poloshkov_mtp_utils.egg-info\SOURCES.txt'
+adding license file 'LICENSE'
+writing manifest file 'src\poloshkov_mtp_utils.egg-info\SOURCES.txt'
+installing to build\bdist.win-amd64\wheel
+running install
+running install_lib
+creating build\bdist.win-amd64\wheel
+creating build\bdist.win-amd64\wheel\poloshkov_mtp_utils
+copying build\lib\poloshkov_mtp_utils\textstats.py -> build\bdist.win-amd64\wheel\.\poloshkov_mtp_utils
+copying build\lib\poloshkov_mtp_utils\__init__.py -> build\bdist.win-amd64\wheel\.\poloshkov_mtp_utils
+running install_egg_info
+Copying src\poloshkov_mtp_utils.egg-info to build\bdist.win-amd64\wheel\.\poloshkov_mtp_utils-1.0.0-py3.11.egg-info
+running install_scripts
+creating build\bdist.win-amd64\wheel\poloshkov_mtp_utils-1.0.0.dist-info\WHEEL
+creating 'C:\\вуз\\цемлов\\lab8_var4\\advanced09_package\\dist\\.tmp-uguy6w_y\\poloshkov_mtp_utils-1.0.0-py3-none-any.whl' and adding 'build\\bdist.win-amd64\\wheel' to it
+adding 'poloshkov_mtp_utils/__init__.py'
+adding 'poloshkov_mtp_utils/textstats.py'
+adding 'poloshkov_mtp_utils-1.0.0.dist-info/licenses/LICENSE'
+adding 'poloshkov_mtp_utils-1.0.0.dist-info/METADATA'
+adding 'poloshkov_mtp_utils-1.0.0.dist-info/WHEEL'
+adding 'poloshkov_mtp_utils-1.0.0.dist-info/top_level.txt'
+adding 'poloshkov_mtp_utils-1.0.0.dist-info/RECORD'
+removing build\bdist.win-amd64\wheel
+Successfully built poloshkov_mtp_utils-1.0.0.tar.gz and poloshkov_mtp_utils-1.0.0-py3-none-any.whl
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=77
+  - wheel
+* Getting build dependencies for sdist...
+* Installed build dependency versions:
+  - setuptools==84.2.1
+  - wheel==0.48.0
+* Building sdist...
+* Building wheel from sdist
+* Creating isolated environment: venv+pip...
+* Installing packages in isolated environment:
+  - setuptools>=77
+  - wheel
+* Getting build dependencies for wheel...
+* Installed build dependency versions:
+  - setuptools==84.2.1
+  - wheel==0.48.0
+* Building wheel...
+
+код возврата: 0
+
+----------------------------------------------------------------------
+Проверка метаданных дистрибутивов twine
+----------------------------------------------------------------------
+$ py -3 -m twine check advanced09_package\dist\poloshkov_mtp_utils-1.0.0-py3-none-any.whl advanced09_package\dist\poloshkov_mtp_utils-1.0.0.tar.gz
+
+Checking advanced09_package\dist\poloshkov_mtp_utils-1.0.0-py3-none-any.whl: PASSED
+Checking advanced09_package\dist\poloshkov_mtp_utils-1.0.0.tar.gz: PASSED
+
+код возврата: 0
